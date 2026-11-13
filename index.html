@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MS GROUP – Strawberry Farm Locations</title>
+<style>
+:root{--g:#15391F;--g2:#2F6B3A;--g3:#6FA56B;--o:#F47720;--bg:#F3F6F1;--ln:#D8E0D5;--tx:#1E2A22;--mt:#55625A}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,"Segoe UI",system-ui,sans-serif;color:var(--tx);background:#fff}
+header{padding:22px 24px 8px;max-width:1180px;margin:auto}h1{margin:0;font-size:28px;color:var(--g)}header p{margin:6px 0 0;color:var(--mt);font-size:16px}
+.bar{height:4px;width:70px;background:var(--o);margin:10px 0 0}
+main{max-width:1180px;margin:auto;padding:12px 24px 40px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px}
+@media(max-width:860px){main{grid-template-columns:1fr}}
+.card{background:var(--bg);border:1px solid var(--ln);border-radius:10px;overflow:hidden}
+svg{display:block;width:100%;height:auto;background:#fbfcfa}
+.leg{display:flex;flex-wrap:wrap;gap:14px;padding:10px 14px;font-size:14px;color:var(--mt);border-top:1px solid var(--ln)}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;margin-right:5px}
+.area{border-bottom:1px solid var(--ln)}.area:last-child{border:0}
+.area button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 16px;font-size:17px;font-weight:600;color:var(--g);box-sizing:border-box}
+.area button:hover{background:#e9efe5}.area button small{font-weight:400;color:var(--mt);font-size:14px}
+.pins{display:none;padding:2px 16px 12px;flex-wrap:wrap;gap:8px}.area.open .pins{display:flex}
+.pins a,.btn{display:inline-block;padding:7px 12px;border-radius:6px;background:#fff;border:1px solid var(--ln);color:var(--g);text-decoration:none;font-size:15px}
+.pins a:hover,.btn:hover{border-color:var(--o);color:#C2570B}
+.top{padding:14px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--ln)}
+.top b{font-size:17px;color:var(--g)}
+.note{padding:12px 16px;font-size:14px;color:var(--mt)}
+circle.f{cursor:pointer;stroke:#fff;stroke-width:1.2}circle.f:hover{stroke:var(--o);stroke-width:2.5}
+text{font-family:inherit}
+</style></head><body>
+<header><h1>Strawberry Farm Locations</h1><div class="bar"></div><p>MS GROUP · Ismailia, Egypt · 29 farms in 9 areas, plus our nursery and factory. Tap any farm to open its location in Google Maps.</p></header>
+<main>
+<div class="card"><svg id="map" viewBox="0 0 700 660" role="img" aria-label="Schematic map of farm locations"></svg>
+<div class="leg" id="leg"></div></div>
+<div class="card"><div class="top"><b>Open in Google Maps</b><a class="btn" id="fac" target="_blank" rel="noopener">MS GROUP Factory</a><a class="btn" id="nur" target="_blank" rel="noopener">Strawberry nursery</a></div><div id="list"></div>
+<div class="note">Schematic view: positions are to scale but no base map is drawn. Farm points are approximate.</div></div>
+</main>
+<script>
+const D={"farms": [{"area": "6L", "lat": 30.460944, "lon": 31.983451, "name": "Ahmed Ghoneim", "id": 1}, {"area": "6L", "lat": 30.459084, "lon": 31.97753, "name": "El-Aqily", "id": 2}, {"area": "6th Division", "lat": 30.450167, "lon": 31.882783, "name": "Ibrahim Abu Raya", "id": 3}, {"area": "9L", "lat": 30.44102, "lon": 32.03649, "name": "Abu Eslam", "id": 4}, {"area": "9L", "lat": 30.449603, "lon": 32.031694, "name": "Ahmed Fakhfakha", "id": 5}, {"area": "9L", "lat": 30.44074, "lon": 32.025654, "name": "El-Agouz", "id": 6}, {"area": "9L", "lat": 30.437673, "lon": 32.026373, "name": "Kamel Hussein", "id": 7}, {"area": "9L", "lat": 30.449603, "lon": 32.031694, "name": "Bolo", "id": 8}, {"area": "9L", "lat": 30.464937, "lon": 32.034863, "name": "Yehia Ghannam", "id": 9}, {"area": "9L", "lat": 30.437673, "lon": 32.026373, "name": "Abdallah Abdo El-Shabaky", "id": 10}, {"area": "9L", "lat": 30.454145, "lon": 32.030153, "name": "Wael Abdelgalil", "id": 11}, {"area": "9L", "lat": 30.454145, "lon": 32.030153, "name": "Ashraf El-Sayed", "id": 12}, {"area": "9L", "lat": 30.44367, "lon": 32.024846, "name": "Ahmed Salah El-Baaly", "id": 13}, {"area": "9L", "lat": 30.454145, "lon": 32.030153, "name": "Mohamed Galal El-Dosh", "id": 14}, {"area": "El-Kassara", "lat": 30.65724, "lon": 32.041956, "name": "Mohmed Omran", "id": 15}, {"area": "El-Kassara", "lat": 30.635653, "lon": 32.032396, "name": "Mohamed El-Daoudy", "id": 16}, {"area": "El-Kassara", "lat": 30.664937, "lon": 32.059779, "name": "Abu Soheib El-Azouny", "id": 17}, {"area": "El-Kassara", "lat": 30.658514, "lon": 32.123442, "name": "El-Sayed Gamal", "id": 18}, {"area": "El-Kassara", "lat": 30.662157, "lon": 31.949432, "name": "Saleh Shehata", "id": 19}, {"area": "El-Kassara", "lat": 30.653892, "lon": 31.910657, "name": "Hamdy Elyan", "id": 20}, {"area": "El-Kassara", "lat": 30.67266, "lon": 32.10536, "name": "Emad Abu El-Sayed", "id": 21}, {"area": "El-Kassara", "lat": 30.666286, "lon": 32.124347, "name": "Ahmed El-Sayed Elyan", "id": 22}, {"area": "El-Mahsama", "lat": 30.55379, "lon": 32.054236, "name": "Hany Zeid", "id": 23}, {"area": "El-Mahsama + 9L", "lat": 30.437673, "lon": 32.026373, "name": "Fathy El-Shawish", "id": 24}, {"area": "El-Mulak", "lat": 30.428762, "lon": 31.876315, "name": "Ahmed El-Shawish", "id": 25}, {"area": "El-Qantara + El-Malak", "lat": 30.413009, "lon": 31.859194, "name": "Amir Essa", "id": 26}, {"area": "Serapeum", "lat": 30.419935, "lon": 32.170338, "name": "El-Araj", "id": 27}, {"area": "Serapeum", "lat": 30.406473, "lon": 32.178638, "name": "Saeed Abdallah", "id": 28}, {"area": "Serapeum", "lat": 30.406473, "lon": 32.178638, "name": "Khaled Mohamed Abdallah", "id": 29}], "nursery": {"lat": 30.665694, "lon": 32.095417}, "factory": {"lat": 30.55925, "lon": 32.034389}};
+const colors=["#2F6B3A","#F47720","#3A7CA5","#15391F","#8E5BA8","#B08A2E","#C2570B","#4E9F9A","#7B8F3A"];
+const areas=[...new Set(D.farms.map(f=>f.area))];const col=a=>colors[areas.indexOf(a)%colors.length];
+const gm=(la,lo)=>"https://www.google.com/maps/search/?api=1&query="+la+","+lo;
+const W=700,H=660,P=80;
+const lats=D.farms.map(f=>f.lat).concat([D.factory.lat,D.nursery.lat]),lons=D.farms.map(f=>f.lon).concat([D.factory.lon,D.nursery.lon]);
+const la0=Math.min(...lats),la1=Math.max(...lats),lo0=Math.min(...lons),lo1=Math.max(...lons);
+const k=Math.cos(30.55*Math.PI/180);
+const sc=Math.min((W-2*P)/((lo1-lo0)*k),(H-2*P)/(la1-la0));
+const ox=(W-(lo1-lo0)*k*sc)/2,oy=(H-(la1-la0)*sc)/2;
+const X=lo=>ox+(lo-lo0)*k*sc,Y=la=>oy+(la1-la)*sc;
+const s=document.getElementById("map");let h="";
+// grid
+for(let i=0;i<=6;i++){const y=P+i*(H-2*P)/6,x=P+i*(W-2*P)/6;h+=`<line x1="${P}" y1="${y}" x2="${W-P}" y2="${y}" stroke="#e4eae1"/><line x1="${x}" y1="${P}" x2="${x}" y2="${H-P}" stroke="#e4eae1"/>`}
+// km scale 10km
+const km=10/(111.32*k)*k*sc/ (1) ; const kmpx=10/111.32*sc;
+h+=`<g transform="translate(${P},${H-18})"><line x1="0" y1="0" x2="${kmpx}" y2="0" stroke="#55625A" stroke-width="2"/><text x="${kmpx+8}" y="5" font-size="14" fill="#55625A">10 km</text></g>`;
+h+=`<g transform="translate(${W-P-18},${P-10})"><text font-size="14" fill="#55625A" text-anchor="middle">N ↑</text></g>`;
+// area labels at centroid
+areas.forEach(a=>{if(a.startsWith("El-Mahsama"))return;const fs=D.farms.filter(f=>f.area==a);const la=fs.reduce((s,f)=>s+f.lat,0)/fs.length,lo=fs.reduce((s,f)=>s+f.lon,0)/fs.length;
+ const dy=(a=="9L")?38:-16;const x=Math.min(W-70,Math.max(70,X(lo)));
+ h+=`<text x="${x}" y="${Y(la)+dy}" text-anchor="middle" font-size="14" font-weight="700" fill="${col(a)}" stroke="#fbfcfa" stroke-width="4" paint-order="stroke">${a}</text>`});
+D.farms.forEach(f=>{h+=`<a href="${gm(f.lat,f.lon)}" target="_blank" rel="noopener"><circle class="f" cx="${X(f.lon)}" cy="${Y(f.lat)}" r="7.5" fill="${col(f.area)}" fill-opacity=".85"><title>${f.name} · ${f.area}</title></circle></a>`});
+const n=D.nursery,fc=D.factory;
+h+=`<a href="${gm(n.lat,n.lon)}" target="_blank" rel="noopener"><rect x="${X(n.lon)-8}" y="${Y(n.lat)-8}" width="16" height="16" fill="#fff" stroke="#15391F" stroke-width="3" transform="rotate(45 ${X(n.lon)} ${Y(n.lat)})"><title>Strawberry nursery</title></rect></a><text x="${X(n.lon)+14}" y="${Y(n.lat)+5}" font-size="14" font-weight="700" fill="#15391F" stroke="#fbfcfa" stroke-width="4" paint-order="stroke">Nursery</text>`;
+h+=`<a href="${gm(fc.lat,fc.lon)}" target="_blank" rel="noopener"><path d="M${X(fc.lon)} ${Y(fc.lat)-15} l5 11 12 1 -9 8 3 12 -11 -6 -11 6 3 -12 -9 -8 12 -1z" fill="#F47720" stroke="#fff" stroke-width="1.5" transform="translate(0,4)"><title>MS GROUP Factory</title></path></a><text x="${X(fc.lon)+18}" y="${Y(fc.lat)+4}" font-size="15" font-weight="700" fill="#C2570B" stroke="#fbfcfa" stroke-width="4" paint-order="stroke">MS GROUP Factory</text>`;
+s.innerHTML=h;
+document.getElementById("leg").innerHTML=`<span><i style="background:#F47720"></i>Factory</span><span><i style="background:#fff;border:2px solid #15391F"></i>Nursery</span><span><i style="background:#2F6B3A"></i>Farm (colored by area)</span>`;
+document.getElementById("fac").href=gm(fc.lat,fc.lon);document.getElementById("nur").href=gm(n.lat,n.lon);
+const L=document.getElementById("list");
+areas.forEach((a,i)=>{const fs=D.farms.filter(f=>f.area==a);const d=document.createElement("div");d.className="area"+(i==0?" open":"");
+ d.innerHTML=`<button><span><i style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${col(a)};margin-right:8px"></i>${a}</span><small>${fs.length} farm${fs.length>1?"s":""}</small></button><div class="pins">${fs.map(f=>`<a target="_blank" rel="noopener" href="${gm(f.lat,f.lon)}">${f.name}</a>`).join("")}</div>`;
+ d.querySelector("button").onclick=()=>d.classList.toggle("open");L.appendChild(d)});
+</script></body></html>
